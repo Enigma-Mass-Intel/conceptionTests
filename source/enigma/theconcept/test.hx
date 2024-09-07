@@ -12,8 +12,11 @@ import enigma.theconcept.scenes.Limbo;
 
 class Test {
 
+  // multiplayer
   var server = new Server();
   var client = new Client();
+
+  // user without 3d model
   var curUser = new User(false);
 
   public function new() {
@@ -21,10 +24,14 @@ class Test {
   }
 
   public static function test() {
+
+    // check for client or server being online
     if (!client.online) try { client.setup(); } catch(e) { errorSwitch(e); break; }
     if (!server.online) try { server.setup(); } catch(e) { errorSwitch(e); break; }
 
+    // move to limbo
     FlxG.switchState(new Limbo(server, client, curUser));
+
   }
 
   private function errorSwitch(err) {

@@ -6,6 +6,7 @@ import enigma.data.User;
 
 import enigma.scenes.ErrorScene;
 
+import enigma.theconcept.data.Users;
 import enigma.theconcept.server.Server;
 import enigma.theconcept.server.Client;
 import enigma.theconcept.scenes.Limbo;
@@ -16,8 +17,11 @@ class Test {
   var server = new Server();
   var client = new Client();
 
-  // user without 3d model
-  var curUser = new User(false);
+  // user without 3d model or movement
+  var curUser = new User(false, false);
+
+  // array of dev users
+  var devUsers = new Users();
 
   public function new() {
     super();
@@ -25,12 +29,14 @@ class Test {
 
   public static function test() {
 
-    // check for client or server being online
+    // check for client or server being offline
     if (!client.online) try { client.setup(); } catch(e) { errorSwitch(e); break; }
     if (!server.online) try { server.setup(); } catch(e) { errorSwitch(e); break; }
 
     // move to limbo
-    FlxG.switchState(new Limbo(server, client, curUser));
+    if (devUsers.userArray.contains(curUser.username)) { 
+        FlxG.switchState(new Limbo(server, client, curUser)); 
+    }
 
   }
 
